@@ -14,6 +14,7 @@ $conexao = mysqli_connect($dbServidor,$dbUsuario,$dbSenha,$dbBanco);
 */
 
 function buscar_tarefas($conexao){
+    echo "Teste";
     $sqlBusca = 'SELECT * FROM tarefas';
     $resultado = mysqli_query($conexao, $sqlBusca);
 
@@ -45,8 +46,5 @@ function gravar_tarefa($conexao, $tarefa){
              {$tarefa['concluida']});
     ";
 
-    echo($sqlGravar);
-
     mysqli_query($conexao, $sqlGravar);
 }
-

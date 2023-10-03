@@ -1,9 +1,9 @@
 <?php session_start();
+include "template.php";
 include "banco.php";
 include "ajudantes.php";
 
 if(array_key_exists('nome', $_POST) && $_POST['nome'] != ''){
-    echo "eu";
     $tarefa = [
         'nome' => $_POST['nome'],
         'descricao' => '',
@@ -41,9 +41,7 @@ if(array_key_exists('nome', $_POST) && $_POST['nome'] != ''){
 
     $lista_tarefas = buscar_tarefas($conexao);
 
-    echo "Cheguei AQUI";
     gravar_tarefa($conexao, $tarefa);
-    echo "Passei";
 }
 
 $lista_tarefas=[];
@@ -53,4 +51,5 @@ if(array_key_exists('lista_tarefas', $_POST)){
     $lista_tarefas = $_POST['lista_tarefas'];
 }
 
-include "template.php";
+
+
