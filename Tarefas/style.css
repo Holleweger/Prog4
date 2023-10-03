@@ -1,0 +1,14 @@
+table, tr, th, td {
+    border: 1px black solid;
+    width: 80%;
+    text-align: center;
+}
+
+table {
+    margin-top: 2em;
+}
+
+.input-text {
+    width: 10em;
+    height: 1em;
+}
