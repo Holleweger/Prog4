@@ -1,18 +1,18 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+session_start();
 
 include "banco.php";
 include "ajudantes.php";
 
-$exibir_tabela = true;
-
+$exibir_tabela = false;
 $tem_erros = false;
-$erros_validacao = [];
+$erros_validacao = array();
 
 if (tem_post()) {
     $tarefa = array();
+
+    $tarefa['id'] = $_POST['id'];
 
     if (array_key_exists('nome', $_POST) && $_POST['nome'] != '') {
         $tarefa['nome'] = $_POST['nome'];
@@ -34,8 +34,6 @@ if (tem_post()) {
             $tem_erros = true;
             $erros_validacao['prazo'] = 'O prazo não é uma data válida!';
         }
-    } else {
-        $tarefa['prazo'] = '';
     }
 
     $tarefa['prioridade'] = $_POST['prioridade'];
@@ -47,21 +45,18 @@ if (tem_post()) {
     }
 
     if (! $tem_erros) {
-        gravar_tarefa($conexao, $tarefa);
+        editar_tarefa($conexao, $tarefa);
         header('Location: tarefas.php');
         die();
     }
 }
 
-$lista_tarefas = buscar_tarefas($conexao);
+$tarefa = buscar_tarefa($conexao, $_GET['id']);
 
-$tarefa = [
-    'id'         => 0,
-    'nome'       => (isset($_POST['nome'])) ? $_POST['nome'] : '',
-    'descricao'  => (isset($_POST['descricao'])) ? $_POST['descricao'] : '',
-    'prazo'      => (isset($_POST['prazo'])) ? traduz_data_para_banco($_POST['prazo']) : '',
-    'prioridade' => (isset($_POST['prioridade'])) ? $_POST['prioridade'] : 1,
-    'concluida'  => (isset($_POST['concluida'])) ? $_POST['concluida'] : ''
-];
+$tarefa['nome'] = (array_key_exists('nome', $_POST)) ? $_POST['nome'] : $tarefa['nome'];
+$tarefa['descricao'] = (array_key_exists('descricao', $_POST)) ? $_POST['descricao'] : $tarefa['descricao'];
+$tarefa['prazo'] = (array_key_exists('prazo', $_POST)) ? $_POST['prazo'] : $tarefa['prazo'];
+$tarefa['prioridade'] = (array_key_exists('prioridade', $_POST)) ? $_POST['prioridade'] : $tarefa['prioridade'];
+$tarefa['concluida'] = (array_key_exists('concluida', $_POST)) ? $_POST['concluida'] : $tarefa['concluida'];
 
 include "template.php";
